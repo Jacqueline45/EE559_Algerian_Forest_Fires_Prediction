@@ -20,7 +20,7 @@
         - Test F1-score: 0.6286
         - Test Accuracy: 0.7833
 
-- Technique 1: Perceptron \
+- Technique 1: Perceptron Learning \
     `python3 perceptron.py --M 4 --epoch 200` (M-fold cross-validation)
     - Drop "Date"
     - Val F1-score: 0.924
