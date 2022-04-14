@@ -26,7 +26,7 @@
     - Val F1-score: 0.9113
     - Val Accuracy: 0.9076
     - Test F1-score: 0.8846
-    - Test Accuracy: 0.9 \
+    - Test Accuracy: 0.9 
 
     `python3 perceptron.py --M 4 --epoch 200 --normalization --plot_title p_norm` 
     - Drop "Date"
@@ -34,7 +34,7 @@
     - Val F1-score: 0.9405
     - Val Accuracy: 0.9457
     - Test F1-score: 0.8679
-    - Test Accuracy: 0.8833 \
+    - Test Accuracy: 0.8833 
 
     `python3 perceptron.py --M 4 --epoch 200 --standardization --plot_title p_std` 
     - Drop "Date"
@@ -42,5 +42,5 @@
     - Val F1-score: 0.9368
     - Val Accuracy: 0.9457
     - Test F1-score: 0.92
-    - Test Accuracy: 0.93 \
+    - Test Accuracy: 0.93 
 
