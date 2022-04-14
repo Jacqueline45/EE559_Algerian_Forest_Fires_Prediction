@@ -21,9 +21,26 @@
         - Test Accuracy: 0.7833
 
 - Technique 1: Perceptron Learning \
-    `python3 perceptron.py --M 4 --epoch 200` (M-fold cross-validation)
+    `python3 perceptron.py --M 4 --epoch 200 --plot_title perceptron` (M-fold cross-validation)
     - Drop "Date"
-    - Val F1-score: 0.924
-    - Val Accuracy: 0.9239
-    - Test F1-score: 0.902
-    - Test Accuracy: 0.9167
+    - Val F1-score: 0.9113
+    - Val Accuracy: 0.9076
+    - Test F1-score: 0.8846
+    - Test Accuracy: 0.9 \
+
+    `python3 perceptron.py --M 4 --epoch 200 --normalization --plot_title p_norm` 
+    - Drop "Date"
+    - Apply min-max normalization to all features
+    - Val F1-score: 0.9405
+    - Val Accuracy: 0.9457
+    - Test F1-score: 0.8679
+    - Test Accuracy: 0.8833 \
+
+    `python3 perceptron.py --M 4 --epoch 200 --standardization --plot_title p_std` 
+    - Drop "Date"
+    - Apply standardization to all features
+    - Val F1-score: 0.9368
+    - Val Accuracy: 0.9457
+    - Test F1-score: 0.92
+    - Test Accuracy: 0.93 \
+

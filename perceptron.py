@@ -5,6 +5,7 @@ from statistics import mean
 
 from utils.read_data import read_data
 from utils.metrics import metrics
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 '''
     Using Stochastic GD - variant 1
@@ -20,14 +21,17 @@ from utils.metrics import metrics
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--M', default=4, help='M-fold cross validation')
-parser.add_argument('--epoch', default=200, help='M-fold cross validation')
+parser.add_argument('--epoch', default=200, help='# epochs trained')
+parser.add_argument('--normalization', action='store_true', help='use min-max normalization')
+parser.add_argument('--standardization', action='store_true', help='use standardization')
+parser.add_argument('--plot_title', default='', help='title for cf_matrix plot')
 args = parser.parse_args()
 
 def J_value(data, label, w):
     J = 0
     for i in range(label.shape[0]):
         z = 1 if label.iloc[i] == 1 else -1
-        x = np.array(data.iloc[i])
+        x = data[i]
         L = np.dot(w, x) * z
         if  L <= 0: J += -L
     return J
@@ -36,7 +40,7 @@ def predict(data, label, w):
     result = []
     for i in range(label.shape[0]):
         z = 1 if label.iloc[i] == 1 else -1
-        x = np.array(data.iloc[i])
+        x = data[i]
         if  np.dot(w, x) * z > 0:
             result.append(label.iloc[i])
         else: 
@@ -85,7 +89,7 @@ def train(X, y, N, idx, w, it, lr, not_l_s, c_c, w_vec, J_vec):
             if it >= 9501 and it <= 10000:
                 w_vec[it-9501] = w
                 if it == 10000: break
-            x = np.array(X.iloc[i])
+            x = X[i]
             z = 1 if y.iloc[i] == 1 else -1
             if np.dot(w, x) * z <= 0:
                 w = w + lr * z * x
@@ -129,6 +133,13 @@ def main():
         D = X_tr_prime.shape[1]
         w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                 = init_train_param(D)
+        if args.normalization or args.standardization:
+            if args.normalization:
+                scaler = MinMaxScaler()
+            elif args.standardization:
+                scaler = StandardScaler()
+            X_tr_prime = scaler.fit_transform(X_tr_prime)
+            X_val = scaler.transform(X_val)
         w_hat = train(X_tr_prime, y_tr_prime, N, idx, w, it, lr, \
                     not_linearly_separable, correctly_classified, w_vec, J_vec)
         
@@ -139,10 +150,17 @@ def main():
     print("Training with full dataset!")
     w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                 = init_train_param(D)
-    w_hat = train(X_tr_prime, y_tr_prime, N, idx, w, it, lr, \
+    if args.normalization or args.standardization:
+        if args.normalization:
+            scaler_all = MinMaxScaler()
+        elif args.standardization:
+            scaler_all = StandardScaler()
+        X_tr = scaler_all.fit_transform(X_tr)
+        X_test = scaler_all.transform(X_test)
+    w_hat = train(X_tr, y_tr, N, idx, w, it, lr, \
                     not_linearly_separable, correctly_classified, w_vec, J_vec)
     y_test_pred = predict(X_test, y_test, w_hat)
-    F1_score, Accuracy = metrics(y_test, y_test_pred, "perceptron")
+    F1_score, Accuracy = metrics(y_test, y_test_pred, args.plot_title)
     print("Test F1_score=", F1_score, "Test Accuracy=", Accuracy)
 
 if __name__ == '__main__':
