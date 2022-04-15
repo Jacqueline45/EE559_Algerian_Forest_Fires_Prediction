@@ -6,6 +6,7 @@ from statistics import mean
 from utils.read_data import read_data
 from utils.metrics import metrics
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from imblearn.over_sampling import SMOTE
 
 '''
     Using Stochastic GD - variant 1
@@ -24,6 +25,7 @@ parser.add_argument('--M', default=4, help='M-fold cross validation')
 parser.add_argument('--epoch', default=200, help='# epochs trained')
 parser.add_argument('--normalization', action='store_true', help='use min-max normalization')
 parser.add_argument('--standardization', action='store_true', help='use standardization')
+parser.add_argument('--use_SMOTE', action='store_true')
 parser.add_argument('--plot_title', default='', help='title for cf_matrix plot')
 args = parser.parse_args()
 
@@ -116,6 +118,7 @@ def main():
     # drop first column ("Date" feature)
     X_tr, X_test = X_tr.iloc[:,1:], X_test.iloc[:,1:]
     F1_result, Acc_result = [0]*args.M, [0]*args.M
+    sm = SMOTE(random_state=42)
     for m in range(args.M):
         X_val, y_val = X_tr.iloc[46*m:46*(m+1)], y_tr.iloc[46*m:46*(m+1)]
         if m == 0: X_tr_prime, y_tr_prime = X_tr.iloc[46:], y_tr.iloc[46:]
@@ -133,6 +136,8 @@ def main():
         D = X_tr_prime.shape[1]
         w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                 = init_train_param(D)
+        if args.use_SMOTE:
+            X_tr_prime, y_tr_prime = sm.fit_resample(X_tr_prime, y_tr_prime)
         if args.normalization or args.standardization:
             if args.normalization:
                 scaler = MinMaxScaler()
@@ -150,13 +155,11 @@ def main():
     print("Training with full dataset!")
     w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                 = init_train_param(D)
+    if args.use_SMOTE:
+            X_tr, y_tr = sm.fit_resample(X_tr, y_tr)
     if args.normalization or args.standardization:
-        if args.normalization:
-            scaler_all = MinMaxScaler()
-        elif args.standardization:
-            scaler_all = StandardScaler()
-        X_tr = scaler_all.fit_transform(X_tr)
-        X_test = scaler_all.transform(X_test)
+        X_tr = scaler.fit_transform(X_tr)
+        X_test = scaler.transform(X_test)
     w_hat = train(X_tr, y_tr, N, idx, w, it, lr, \
                     not_linearly_separable, correctly_classified, w_vec, J_vec)
     y_test_pred = predict(X_test, y_test, w_hat)
