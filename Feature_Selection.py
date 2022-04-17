@@ -12,7 +12,7 @@ from imblearn.over_sampling import SMOTE
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--M', default=4, help='M-fold cross validation')
-parser.add_argument('--k', default=5, help='k for kNN')
+parser.add_argument('--k', default=7, help='k for kNN')
 parser.add_argument('--use_SMOTE', action='store_true')
 args = parser.parse_args()
 

@@ -10,7 +10,7 @@
 
 - Sequential Backward Selection
     - Most contributing features:
-    - Ws > RH > FFMC > Tempature > DC > BUI > DMC > Rain > ISI
+    - Ws > Tempature > RH > FFMC > Rain > DC > BUI > DMC > ISI
 
 - Required reference systems
     - Trivial system \
@@ -46,31 +46,49 @@
     - Test Accuracy: 0.93 
 
     `python3 perceptron.py --M 4 --epoch 200 --standardization --use_SMOTE --plot_title p_std_SMOTE` 
-    - Apply standardization to all features
-    - Val F1-score: 0.9667
-    - Val Accuracy: 0.9674
-    - Test F1-score: 0.9388
-    - Test Accuracy: 0.95
+    - Val F1-score: 0.9372
+    - Val Accuracy: 0.9402
+    - Test F1-score: 0.9583
+    - Test Accuracy: 0.9667
+
+    `python3 perceptron.py --M 4 --epoch 200 --standardization --use_SMOTE --feat_reduction --plot_title p_feat_reduct` 
+    - Four least contributing features: ISI -> DMC -> BUI -> DC
+    - Drop (1,2,3,4) features
+    - Val F1-score: (0.9446, 0.9242, 0.8448, 0.8784)
+    - Val Accuracy: (0.9348, 0.9076, 0.8207, 0.8696)
+    - Test F1-score: (0.902, 0.9388, 0.7931, 0.7302)
+    - Test Accuracy: (0.9167, 0.95, 0.8, 0.7167)
+
+    `python3 perceptron.py --standardization --use_SMOTE --extra_feat --plot_title p_add_1_feat` 
+    - Val F1-score: 0.8667
+    - Val Accuracy: 0.913
+    - Test F1-score: 0.7419
+    - Test Accuracy: 0.7333
 
 - Technique 2: KNN Classifier (Drop "Date", with Standardization)\
-    `python3 kNN.py --M 4 --k 5 --plot_title kNN`
-    - The following results are for k = (3, 4, 5, 6, 7)
-    - Val F1-score: (0.8532, 0.8605, 0.8745, 0.886, 0.8678)
-    - Val Accuracy: (0.8641, 0.8696, 0.875, 0.875, 0.8641)
-    - Test F1-score: (0.7179, 0.6061, 0.7568, 0.6857, 0.7368)
-    - Test Accuracy: (0.8167, 0.7833, 0.85, 0.8167, 0.8333)
+    `python3 kNN.py --M 4 --k 7 --plot_title kNN`
+    - The following results are for k = (2, 3, 4, 5, 6, 7, 8)
+    - Val F1-score: (0.8287, 0.8532, 0.8605, 0.8745, 0.886, 0.8678, 0.8739)
+    - Val Accuracy: (0.8478, 0.8641, 0.8696, 0.875, 0.875, 0.8641, 0.8804)
+    - Test F1-score: (0.7, 0.8444, 0.8095, 0.8182, 0.8372, 0.8444, 0.8182)
+    - Test Accuracy: (0.8, 0.8833, 0.8667, 0.8667, 0.8833, 0.8833, 0.8667)
 
-    `python3 kNN.py --M 4 --k 5 --use_SMOTE --plot_title kNN_SMOTE`
-    - Val F1-score: 0.8594
-    - Val Accuracy: 0.8696
-    - Test F1-score: 0.7692
-    - Test Accuracy: 0.85
+    `python3 kNN.py --M 4 --k 7 --use_SMOTE --plot_title kNN_SMOTE`
+    - Val F1-score: 0.8448
+    - Val Accuracy: 0.8641
+    - Test F1-score: 0.8372
+    - Test Accuracy: 0.8833
 
-    `python3 kNN.py --M 4 --k 5 --feat_reduction --plot_title kNN_feat_reduct`
-    - Four least contributing features: ISI -> Rain -> DMC -> BUI
+    `python3 kNN.py --M 4 --k 7 --feat_reduction --plot_title kNN_feat_reduct`
+    - Four least contributing features: ISI -> DMC -> BUI -> DC 
     - Drop (1,2,3,4) features
-    - Val F1-score: (0.7121, 0.7098, 0.6595, 0.7183)
-    - Val Accuracy: (0.7663, 0.7663, 0.75, 0.7609)
-    - Test F1-score: (0.6666, 0.6154, 0.5714, 0.6222)
-    - Test Accuracy: (0.7666, 0.75, 0.7, 0.7167)
+    - Val F1-score: (0.7915, 0.7772, 0.77, 0.7265)
+    - Val Accuracy: (0.7826, 0.7554, 0.7337, 0.6522)
+    - Test F1-score: (0.7234, 0.7347, 0.7451, 0.7368)
+    - Test Accuracy: (0.7833, 0.7833, 0.7833, 0.75)
 
+    `python3 kNN.py --extra_feat --plot_title kNN_add_1_feat` 
+    - Val F1-score: 0.4615
+    - Val Accuracy: 0.6957
+    - Test F1-score: 0.2917
+    - Test Accuracy: 0.4333
