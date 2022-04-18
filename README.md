@@ -92,3 +92,16 @@
     - Val Accuracy: 0.6957
     - Test F1-score: 0.2917
     - Test Accuracy: 0.4333
+
+- Technique 3: MSE Classifier (Drop "Date")\
+    `python3 MSE.py --use_SMOTE --plot_title p_MSE_SMOTE` (b=1 for all data pts)
+    - Val F1-score: 0.9898
+    - Val Accuracy: 0.9837
+    - Test F1-score: 0.9787
+    - Test Accuracy: 0.9833
+
+    `python3 MSE.py --plot_title p_MSE` (b=1 for all data pts)
+    - Val F1-score: 0.9942
+    - Val Accuracy: 0.9891
+    - Test F1-score: 1
+    - Test Accuracy: 1

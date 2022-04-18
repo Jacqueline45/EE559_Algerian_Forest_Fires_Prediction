@@ -120,7 +120,6 @@ def train(X, y, N, idx, w, it, lr, not_l_s, c_c, w_vec, J_vec):
 def main():
     X_tr, y_tr = read_data('datasets/algerian_fires_train.csv')
     X_test, y_test = read_data('datasets/algerian_fires_test.csv')
-    print(X_test.iloc[0])
     # drop first column ("Date" feature)
     X_tr, X_test = X_tr.iloc[:,1:], X_test.iloc[:,1:]
     if args.feat_reduction:
