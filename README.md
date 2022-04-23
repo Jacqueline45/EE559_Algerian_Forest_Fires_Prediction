@@ -1,5 +1,5 @@
 # EE559_Project
-
+## Project Update
 - 2-class problem
 
 - Dataset (# data pts.)
