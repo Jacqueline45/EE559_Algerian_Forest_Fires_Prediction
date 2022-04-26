@@ -26,12 +26,12 @@ def main():
     model = KNeighborsClassifier(n_neighbors=int(args.k))
     scaler = StandardScaler()
     sm = SMOTE(random_state=42)
+    if args.feat_reduction:
+            X_tr = X_tr.drop(columns=['Temperature'])
+            X_test = X_test.drop(columns=['Temperature'])
     if not args.extra_feat:
         # drop first column ("Date" feature)
         X_tr, X_test = X_tr.iloc[:,1:], X_test.iloc[:,1:]
-        if args.feat_reduction:
-            X_tr = X_tr.drop(columns=['ISI','DMC'])
-            X_test = X_test.drop(columns=['ISI','DMC'])
         F1_result, Acc_result = [0]*int(args.M), [0]*int(args.M)
         for m in range(int(args.M)):
             X_val, y_val = X_tr.iloc[46*m:46*(m+1)], y_tr.iloc[46*m:46*(m+1)]

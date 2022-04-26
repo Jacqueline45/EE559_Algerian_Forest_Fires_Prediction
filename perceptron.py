@@ -122,8 +122,8 @@ def main():
     # drop first column ("Date" feature)
     X_tr, X_test = X_tr.iloc[:,1:], X_test.iloc[:,1:]
     if args.feat_reduction:
-        X_tr = X_tr.drop(columns=['ISI', 'DMC', 'BUI', 'DC'])
-        X_test = X_test.drop(columns=['ISI', 'DMC', 'BUI', 'DC'])
+        X_tr = X_tr.drop(columns=['Temperature', 'Ws'])
+        X_test = X_test.drop(columns=['Temperature', 'Ws'])
     F1_result, Acc_result = [0]*int(args.M), [0]*int(args.M)
     sm = SMOTE(random_state=42)
     if args.normalization or args.standardization:

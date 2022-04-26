@@ -49,7 +49,7 @@ def main():
                 F1_result[m], Acc_result[m] = metrics(y_val, y_val_pred, "kNN", work='val')
             SBS_res[col] = mean(F1_result)+mean(Acc_result)
         SBS_res = sorted(SBS_res.items(), key = lambda kv:(kv[1], kv[0]))
-        drop_col = SBS_res[0][0]
+        drop_col = SBS_res[-1][0]
         print("dropped column:", drop_col)
         X_tr = X_tr.drop(columns=drop_col)
 
