@@ -13,7 +13,6 @@ from imblearn.over_sampling import SMOTE
 '''
     Using Stochastic GD - variant 1
     Randomly shuffle before each epoch
-    Use Margin = 0.5
     Initial weight vector is random i.i.d. between 0.001 & 0.1
     lr = 100/(1000+i), where i is the number of iterations
     Hailting condition: 
