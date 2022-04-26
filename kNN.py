@@ -5,7 +5,6 @@ import pandas as pd
 
 from utils.read_data import read_data
 from utils.metrics import metrics
-from utils.Sep_region import Sep_region
 from utils.Add_feat import Add_feat
 
 from sklearn.preprocessing import StandardScaler
@@ -63,15 +62,12 @@ def main():
         F1_score, Accuracy = metrics(y_test, y_test_pred, args.plot_title+'_k='+str(args.k))
         print("Test F1_score=", F1_score, "Test Accuracy=", Accuracy)
     else:
-        X_val, y_val = X_tr.iloc[:46], y_tr.iloc[:46]
-        X_tr_prime, y_tr_prime = X_tr.iloc[46:], y_tr.iloc[46:]
-        X_tr_p1, X_tr_p2, y_tr_p1, y_tr_p2, X_val1, X_val2 = \
-                                            Sep_region(X_tr_prime, y_tr_prime, X_val)
-        X_tr_prime, X_val = Add_feat(X_tr_p1, X_tr_p2, X_val1, X_val2)
+        X_val, y_val = X_tr.iloc[-46:], y_tr.iloc[-46:]
+        X_tr_prime, y_tr_prime = X_tr.iloc[:-46], y_tr.iloc[:-46]
+        X_tr_prime, X_val = Add_feat(X_tr_prime, X_val)
         # drop first column ("Date" feature)
         X_tr_prime, X_val = X_tr_prime.iloc[:,1:], X_val.iloc[:,1:]
-        y_tr_p1, y_tr_p2 = y_tr_p1[3:-3], y_tr_p2[3:-3]
-        y_tr_prime = y_tr_p1 + y_tr_p2
+        y_tr_prime = y_tr_prime[4:-4]
         if args.use_SMOTE:
                 X_tr_prime, y_tr_prime = sm.fit_resample(X_tr_prime, y_tr_prime)
         X_tr_prime = scaler.fit_transform(X_tr_prime)
@@ -82,12 +78,10 @@ def main():
         print("Val F1_score=", F1_score, "Val Accuracy=", Accuracy)
 
         print("Training with full dataset!")
-        X_tr1, X_tr2, y_tr1, y_tr2, X_test1, X_test2 = Sep_region(X_tr, y_tr, X_test)
-        X_tr, X_test = Add_feat(X_tr1, X_tr2, X_test1, X_test2)
+        X_tr, X_test = Add_feat(X_tr, X_test)
         # drop first column ("Date" feature)
         X_tr, X_test = X_tr.iloc[:,1:], X_test.iloc[:,1:]
-        y_tr1, y_tr2 = y_tr1[3:-3], y_tr2[3:-3]
-        y_tr = y_tr1 + y_tr2
+        y_tr = y_tr[4:-4]
         if args.use_SMOTE:
                 X_tr, y_tr = sm.fit_resample(X_tr, y_tr)
         X_tr = scaler.fit_transform(X_tr)

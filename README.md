@@ -1,5 +1,4 @@
 # EE559_Project
-## Project Update
 - 2-class problem
 
 - Dataset (# data pts.)
@@ -60,10 +59,10 @@
     - Test Accuracy: (0.9167, 0.95, 0.8, 0.7167)
 
     `python3 perceptron.py --standardization --use_SMOTE --extra_feat --plot_title p_add_1_feat` 
-    - Val F1-score: 0.8667
-    - Val Accuracy: 0.913
-    - Test F1-score: 0.7419
-    - Test Accuracy: 0.7333
+    - Val F1-score: 0.9882
+    - Val Accuracy: 0.9783
+    - Test F1-score: 0.8846
+    - Test Accuracy: 0.9
 
 - Technique 2: KNN Classifier (Drop "Date", with Standardization)\
     `python3 kNN.py --M 4 --k 7 --plot_title kNN`
@@ -88,10 +87,10 @@
     - Test Accuracy: (0.7833, 0.7833, 0.7833, 0.75)
 
     `python3 kNN.py --extra_feat --plot_title kNN_add_1_feat` 
-    - Val F1-score: 0.4615
-    - Val Accuracy: 0.6957
-    - Test F1-score: 0.2917
-    - Test Accuracy: 0.4333
+    - Val F1-score: 0.9767
+    - Val Accuracy: 0.9565
+    - Test F1-score: 0.7555
+    - Test Accuracy: 0.8167
 
 - Technique 3: MSE Classifier (Drop "Date")\
     `python3 MSE.py --use_SMOTE --plot_title p_MSE_SMOTE` (b=1 for all data pts)
