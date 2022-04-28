@@ -4,7 +4,7 @@ import pandas as pd
 from statistics import mean
 
 from utils.read_data import read_data
-from utils.metrics import metrics
+from utils.metrics import metrics, plot_val_cf_matrix
 
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
@@ -108,7 +108,7 @@ def main():
     X_test, y_test = read_data('datasets/algerian_fires_test.csv')
     # drop first column ("Date" feature)
     X_tr, X_test = X_tr.iloc[:,1:], X_test.iloc[:,1:]
-    F1_result, Acc_result = [0]*int(args.M), [0]*int(args.M)
+    F1_result, Acc_result, TP, TN, FP, FN = [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M)
     sm = SMOTE(random_state=42)
     scaler = StandardScaler()
     for m in range(int(args.M)):
@@ -136,9 +136,10 @@ def main():
                     not_linearly_separable, correctly_classified, w_vec, J_vec)
         
         y_val_pred = predict(X_val, y_val, w_hat)
-        F1_result[m], Acc_result[m] = metrics(y_val, y_val_pred, "perceptron", work='val')
+        F1_result[m], Acc_result[m], TP[m], TN[m], FP[m], FN[m] = metrics(y_val, y_val_pred, args.plot_title, work='val')
 
     print("Val F1_score=", mean(F1_result), "Val Accuracy=", mean(Acc_result))
+    plot_val_cf_matrix(y_val, y_val_pred, args.plot_title, mean(TP), mean(TN), mean(FP), mean(FN))
     print("Training with full dataset!")
     w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                 = init_train_param(D)

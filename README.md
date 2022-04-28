@@ -112,7 +112,7 @@
     - Test F1-score: 0.9787
     - Test Accuracy: 0.9833
 
-    `python3 MSE.py --plot_title p_MSE` (b=1 for all data pts)
+    `python3 MSE.py --plot_title MSE` (b=1 for all data pts)
     - Val F1-score: 0.9942
     - Val Accuracy: 0.9891
     - Test F1-score: 1
