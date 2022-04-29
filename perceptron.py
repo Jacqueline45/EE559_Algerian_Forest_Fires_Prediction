@@ -4,7 +4,7 @@ import pandas as pd
 from statistics import mean
 
 from utils.read_data import read_data
-from utils.metrics import metrics
+from utils.metrics import metrics, plot_val_cf_matrix
 from utils.Add_feat import Add_feat
 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
@@ -35,7 +35,7 @@ args = parser.parse_args()
 def J_value(data, label, w):
     J = 0
     for i in range(len(label)):
-        z = 1 if label[i] == 1 else -1
+        z = 1 if label.iloc[i] == 1 else -1
         x = data[i]
         L = np.dot(w, x) * z
         if  L <= 0: J += -L
@@ -95,8 +95,8 @@ def train(X, y, N, idx, w, it, lr, not_l_s, c_c, w_vec, J_vec):
                 w_vec[it-9501] = w
                 if it == 10000: break
             x = X[i]
-            z = 1 if y[i] == 1 else -1
-            if np.dot(w, x) * z <= 0:
+            z = 1 if y.iloc[i] == 1 else -1
+            if np.dot(w, x) * z <= 1:
                 w = w + lr * z * x
                 if c_c > 0:
                     c_c = 0
@@ -121,9 +121,9 @@ def main():
     # drop first column ("Date" feature)
     X_tr, X_test = X_tr.iloc[:,1:], X_test.iloc[:,1:]
     if args.feat_reduction:
-        X_tr = X_tr.drop(columns=['Temperature', 'Ws'])
-        X_test = X_test.drop(columns=['Temperature', 'Ws'])
-    F1_result, Acc_result = [0]*int(args.M), [0]*int(args.M)
+        X_tr = X_tr.drop(columns=['Temperature','Ws','BUI','RH'])
+        X_test = X_test.drop(columns=['Temperature','Ws','BUI','RH'])
+    F1_result, Acc_result, TP, TN, FP, FN = [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M)
     sm = SMOTE(random_state=42)
     if args.normalization or args.standardization:
         if args.normalization: scaler = MinMaxScaler()
@@ -155,9 +155,10 @@ def main():
                         not_linearly_separable, correctly_classified, w_vec, J_vec)
             
             y_val_pred = predict(X_val, y_val, w_hat)
-            F1_result[m], Acc_result[m] = metrics(y_val, y_val_pred, "perceptron", work='val')
+            F1_result[m], Acc_result[m], TP[m], TN[m], FP[m], FN[m] = metrics(y_val, y_val_pred, "perceptron", work='val')
 
         print("Val F1_score=", mean(F1_result), "Val Accuracy=", mean(Acc_result))
+        plot_val_cf_matrix(y_val, y_val_pred, args.plot_title, mean(TP), mean(TN), mean(FP), mean(FN))
         print("Training with full dataset!")
         w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                     = init_train_param(D)
@@ -176,14 +177,14 @@ def main():
         X_val, y_val = X_tr.iloc[-46:], y_tr.iloc[-46:]
         X_tr_prime, y_tr_prime = X_tr.iloc[:-46], y_tr.iloc[:-46]
          # Shuffle
-        N = X_tr_prime.shape[0] 
+        N = X_tr_prime.shape[0]-8
         idx = np.arange(N)
         D = X_tr_prime.shape[1]
         w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
-                                                                = init_train_param(D)
+                                                                = init_train_param(D+1)
+        print("X_tr_prime shape 1=", X_tr_prime.shape)
         X_tr_prime, X_val = Add_feat(X_tr_prime, X_val)
-        # drop first column ("Date" feature)
-        X_tr_prime, X_val = X_tr_prime.iloc[:,1:], X_val.iloc[:,1:]
+        print("X_tr_prime shape 2=", X_tr_prime.shape)
         y_tr_prime = y_tr_prime[4:-4]
         
         if args.use_SMOTE:
@@ -199,11 +200,9 @@ def main():
 
         print("Training with full dataset!")
         X_tr, X_test = Add_feat(X_tr, X_test)
-        # drop first column ("Date" feature)
-        X_tr, X_test = X_tr.iloc[:,1:], X_test.iloc[:,1:]
         y_tr = y_tr[4:-4]
         w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
-                                                                    = init_train_param(D)
+                                                                    = init_train_param(D+1)
         if args.use_SMOTE:
                 X_tr, y_tr = sm.fit_resample(X_tr, y_tr)
         if args.normalization or args.standardization:

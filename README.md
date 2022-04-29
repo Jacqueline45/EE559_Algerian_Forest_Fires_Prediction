@@ -50,7 +50,7 @@
     - Test F1-score: 0.9583
     - Test Accuracy: 0.9667
 
-    `python3 perceptron.py --M 4 --epoch 200 --standardization --use_SMOTE --feat_reduction --plot_title p_feat_reduct` 
+    `python3 perceptron.py --M 4 --epoch 200 --standardization --feat_reduction --plot_title p_feat_reduct` 
     - Four least contributing features: Temperature -> Ws -> BUI -> RH
     - Drop (1,2,3,4) features
     - Val F1-score: (0.9725, 0.9805, 0.9763, 0.9875)
@@ -58,7 +58,7 @@
     - Test F1-score: (0.9583, 0.9787, 0.9388, 0.9583)
     - Test Accuracy: (0.9667, 0.9833, 0.95, 0.9667)
 
-    `python3 perceptron.py --standardization --use_SMOTE --feat_reduction --extra_feat --plot_title p_add_1_feat` 
+    `python3 perceptron.py --standardization --feat_reduction --extra_feat --plot_title p_add_1_feat` 
     - Val F1-score: 0.9882
     - Val Accuracy: 0.9783
     - Test F1-score: 0.9787
