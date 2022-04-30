@@ -117,3 +117,16 @@
     - Val Accuracy: 0.9891
     - Test F1-score: 1
     - Test Accuracy: 1
+
+- Technique 4: SVM (Drop "Date")\
+    `python3 SVM.py --Linear SVM`
+    - Train F1_score= 0.8771929824561403 
+    - Train Accuracy= 0.8478260869565217
+    - Test F1_score= 0.8571428571428571 
+    - Test Accuracy= 0.8666666666666667
+
+    `python3 SVM.py --RBF SVM` 
+    - Train RBF F1_score= 0.9032258064516129 
+    - Train RBF Accuracy= 0.8695652173913043
+    - Test RBF F1_score= 0.8571428571428571 
+    - Test RBF Accuracy= 0.8666666666666667
