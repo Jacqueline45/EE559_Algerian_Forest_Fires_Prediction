@@ -138,3 +138,25 @@
     - Test Accuracy RBF: (0.8333, 0.8333, 0.8333, 0.8166)
     - Test F1-score Linear: (0.83636, 0.83636, 0.83636, 0.8214)
     - Test Accuracy Linear: (0.85, 0.85, 0.85, 0.8333)
+
+- Technique 5: Logistic Regression (Drop "Date")\
+    `python3 Logistic Regression.ipynb`
+    - Train Logistic regression F1_score= 0.9385964912280702 
+    - Train Logistic regression Accuracy= 0.9239130434782609
+    - Test Logistic regression F1_score= 0.8260869565217391 
+    - Test Logistic regression Accuracy= 0.8666666666666667
+
+    `python3 Logistic Regression.ipynb --feat_reduction only ISI `
+    - Best contributing features: ISI
+    - Accuracy for train for Only ISI: 0.9130434782608695
+    - Accuracy for test only ISI: 0.8666666666666667
+
+    `python3 Logistic Regression.ipynb --feat_reduction --plot_title `
+    - Three least contributing features: Temperature -> Ws -> RH
+    - Drop (1,2,3) features
+    - Accuracy for train 1drop : 0.923913043478260
+    - Accuracy for test 1drop: 0.9
+    - Accuracy for train 2drop : 0.9239130434782609
+    - Accuracy for test 2drop: 0.8833333333333333
+    - Accuracy for train 3drop : 0.9293478260869565
+    - Accuracy for test 3drop: 0.8666666666666667
