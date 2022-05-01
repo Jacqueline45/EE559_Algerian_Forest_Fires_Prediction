@@ -126,7 +126,15 @@
     - Test Accuracy= 0.8666666666666667
 
     `python3 SVM.py --RBF SVM` 
-    - Train RBF F1_score= 0.9032258064516129 
-    - Train RBF Accuracy= 0.8695652173913043
-    - Test RBF F1_score= 0.8571428571428571 
-    - Test RBF Accuracy= 0.8666666666666667
+    -Test RBF Accuracy= 0.8333333333333334 
+    -Test Linear Accuracy= 0.85
+    -Test RBF F1_score= 0.8214285714285715
+    -Test Linear F1_score= 0.8363636363636363
+
+    `python3 SVM.ipynb --feat_reduction --plot_title `
+    - Four least contributing features: Temperature -> Ws -> BUI -> RH
+    - Drop (1,2,3,4) features
+    - Test F1-score RBF: (0.8214, 0.8214, 0.8214, 0.8070)
+    - Test Accuracy RBF: (0.8333, 0.8333, 0.8333, 0.8166)
+    - Test F1-score Linear: (0.83636, 0.83636, 0.83636, 0.8214)
+    - Test Accuracy Linear: (0.85, 0.85, 0.85, 0.8333)
