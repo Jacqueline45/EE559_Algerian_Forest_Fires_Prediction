@@ -8,7 +8,6 @@ from utils.metrics import metrics, plot_val_cf_matrix
 from utils.Add_feat import Add_feat
 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from imblearn.over_sampling import SMOTE
 
 '''
     Using Stochastic GD - variant 1
@@ -26,7 +25,6 @@ parser.add_argument('--M', default=4, help='M-fold cross validation')
 parser.add_argument('--epoch', default=200, help='# epochs trained')
 parser.add_argument('--normalization', action='store_true', help='use min-max normalization')
 parser.add_argument('--standardization', action='store_true', help='use standardization')
-parser.add_argument('--use_SMOTE', action='store_true')
 parser.add_argument ('--feat_reduction', action='store_true', help='drop four least contributing features')
 parser.add_argument ('--extra_feat', action='store_true', help='Create extra features utilizing Date')
 parser.add_argument('--plot_title', default='', help='title for cf_matrix plot')
@@ -124,7 +122,6 @@ def main():
         X_tr = X_tr.drop(columns=['Temperature','Ws','BUI','RH'])
         X_test = X_test.drop(columns=['Temperature','Ws','BUI','RH'])
     F1_result, Acc_result, TP, TN, FP, FN = [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M), [0]*int(args.M)
-    sm = SMOTE(random_state=42)
     if args.normalization or args.standardization:
         if args.normalization: scaler = MinMaxScaler()
         elif args.standardization: scaler = StandardScaler()
@@ -146,8 +143,6 @@ def main():
             D = X_tr_prime.shape[1]
             w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                     = init_train_param(D)
-            if args.use_SMOTE:
-                X_tr_prime, y_tr_prime = sm.fit_resample(X_tr_prime, y_tr_prime)
             if args.normalization or args.standardization:
                 X_tr_prime = scaler.fit_transform(X_tr_prime)
                 X_val = scaler.transform(X_val)
@@ -162,8 +157,6 @@ def main():
         print("Training with full dataset!")
         w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                     = init_train_param(D)
-        if args.use_SMOTE:
-                X_tr, y_tr = sm.fit_resample(X_tr, y_tr)
         if args.normalization or args.standardization:
             X_tr = scaler.fit_transform(X_tr)
             X_test = scaler.transform(X_test)
@@ -187,8 +180,6 @@ def main():
         print("X_tr_prime shape 2=", X_tr_prime.shape)
         y_tr_prime = y_tr_prime[4:-4]
         
-        if args.use_SMOTE:
-                X_tr_prime, y_tr_prime = sm.fit_resample(X_tr_prime, y_tr_prime)
         if args.normalization or args.standardization:
             X_tr_prime = scaler.fit_transform(X_tr_prime)
             X_val = scaler.transform(X_val)
@@ -203,8 +194,6 @@ def main():
         y_tr = y_tr[4:-4]
         w, it, lr, not_linearly_separable, correctly_classified, w_vec, J_vec \
                                                                     = init_train_param(D+1)
-        if args.use_SMOTE:
-                X_tr, y_tr = sm.fit_resample(X_tr, y_tr)
         if args.normalization or args.standardization:
             X_tr = scaler.fit_transform(X_tr)
             X_test = scaler.transform(X_test)

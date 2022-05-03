@@ -44,12 +44,6 @@
     - Test F1-score: 0.92
     - Test Accuracy: 0.93 
 
-    `python3 perceptron.py --M 4 --epoch 200 --standardization --use_SMOTE --plot_title p_std_SMOTE` 
-    - Val F1-score: 0.9372
-    - Val Accuracy: 0.9402
-    - Test F1-score: 0.9583
-    - Test Accuracy: 0.9667
-
     `python3 perceptron.py --M 4 --epoch 200 --standardization --feat_reduction --plot_title p_feat_reduct` 
     - Four least contributing features: Temperature -> Ws -> BUI -> RH
     - Drop (1,2,3,4) features
@@ -64,12 +58,6 @@
     - Test F1-score: 0.9787
     - Test Accuracy: 0.9833
 
-    `python3 perceptron.py --standardization --use_SMOTE --extra_feat --plot_title p_add_1_feat` 
-    - Val F1-score: 0.9767
-    - Val Accuracy: 0.9565
-    - Test F1-score: 0.92
-    - Test Accuracy: 0.9333
-
 - Technique 2: KNN Classifier (Drop "Date", with Standardization)\
     `python3 kNN.py --M 4 --k 7 --plot_title kNN`
     - The following results are for k = (2, 3, 4, 5, 6, 7, 8)
@@ -77,12 +65,6 @@
     - Val Accuracy: (0.8478, 0.8641, 0.8696, 0.875, 0.875, 0.8641, 0.8804)
     - Test F1-score: (0.7, 0.8444, 0.8095, 0.8182, 0.8372, 0.8444, 0.8182)
     - Test Accuracy: (0.8, 0.8833, 0.8667, 0.8667, 0.8833, 0.8833, 0.8667)
-
-    `python3 kNN.py --M 4 --k 7 --use_SMOTE --plot_title kNN_SMOTE`
-    - Val F1-score: 0.8448
-    - Val Accuracy: 0.8641
-    - Test F1-score: 0.8372
-    - Test Accuracy: 0.8833
 
     `python3 kNN.py --M 4 --k 7 --feat_reduction --plot_title kNN_feat_reduct`
     - Four least contributing features: Temperature -> Ws -> BUI -> RH
@@ -106,12 +88,6 @@
     - Test Accuracy: 0.8833
 
 - Technique 3: MSE Classifier (Drop "Date")\
-    `python3 MSE.py --use_SMOTE --plot_title p_MSE_SMOTE` (b=1 for all data pts)
-    - Val F1-score: 0.9898
-    - Val Accuracy: 0.9837
-    - Test F1-score: 0.9787
-    - Test Accuracy: 0.9833
-
     `python3 MSE.py --plot_title MSE` (b=1 for all data pts)
     - Val F1-score: 0.9942
     - Val Accuracy: 0.9891
