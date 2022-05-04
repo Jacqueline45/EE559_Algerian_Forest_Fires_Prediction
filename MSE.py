@@ -12,6 +12,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--M', default=4, help='M-fold cross validation')
 parser.add_argument('--b', default=1, help='MSE clf parameter')
 parser.add_argument('--epoch', default=200, help='# epochs trained')
+parser.add_argument('--standardization', action='store_true', help='use standardization')
+parser.add_argument ('--feat_reduction', action='store_true', help='drop four least contributing features')
+parser.add_argument ('--extra_feat', action='store_true', help='Create extra features utilizing Date')
+parser.add_argument ('--feat54', action='store_true', help='54 features')
 parser.add_argument('--plot_title', default='', help='title for cf_matrix plot')
 args = parser.parse_args()
 
@@ -26,16 +30,14 @@ def J_value(data, label, w):
         J /= N
     return J
 
-def predict(data, label, w):
+def predict(data, w):
     result = []
-    for i in range(len(label)):
-        z = 1 if label.iloc[i] == 1 else -1
+    for i in range(len(data)):
         x = data[i]
-        if  np.dot(w, x) * z > 0:
-            result.append(label.iloc[i])
+        if  np.dot(w, x) > 0:
+            result.append(1)
         else: 
-            pred = 1 if label.iloc[i]==0 else 1
-            result.append(pred)
+            result.append(0)
     return result
 
 def init_train_param(D):
@@ -130,7 +132,7 @@ def main():
         w_hat = train(X_tr_prime, y_tr_prime, N, idx, w, it, lr, \
                     not_linearly_separable, correctly_classified, w_vec, J_vec)
         
-        y_val_pred = predict(X_val, y_val, w_hat)
+        y_val_pred = predict(X_val, w_hat)
         F1_result[m], Acc_result[m], TP[m], TN[m], FP[m], FN[m] = metrics(y_val, y_val_pred, args.plot_title, work='val')
 
     print("Val F1_score=", mean(F1_result), "Val Accuracy=", mean(Acc_result))
@@ -143,7 +145,7 @@ def main():
     X_test = scaler.transform(X_test)
     w_hat = train(X_tr, y_tr, N, idx, w, it, lr, \
                     not_linearly_separable, correctly_classified, w_vec, J_vec)
-    y_test_pred = predict(X_test, y_test, w_hat)
+    y_test_pred = predict(X_test, w_hat)
     F1_score, Accuracy = metrics(y_test, y_test_pred, args.plot_title)
     print("Test F1_score=", F1_score, "Test Accuracy=", Accuracy)
 

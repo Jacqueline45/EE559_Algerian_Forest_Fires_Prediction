@@ -89,10 +89,10 @@
 
 - Technique 3: MSE Classifier (Drop "Date")\
     `python3 MSE.py --plot_title MSE` (b=1 for all data pts)
-    - Val F1-score: 0.9942
-    - Val Accuracy: 0.9891
-    - Test F1-score: 1
-    - Test Accuracy: 1
+    - Val F1-score: 0.79
+    - Val Accuracy: 0.8424
+    - Test F1-score: 0.7568
+    - Test Accuracy: 0.85
 
 - Technique 4: SVM (Drop "Date")\
     `python3 SVM.py --Linear SVM`
